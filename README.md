@@ -10,4 +10,4 @@ Current dependencies:
 - XorStr Compile Time
 - FNV-1 Hash Functions
 
-** The purpose of this project is gain knowledge about the engine and the game, using this source code as something that you can sell is not legal! Please keep in mind that this project is created and maintened within the community! **
+**The purpose of this project is gain knowledge about the engine and the game, using this source code as something that you can sell is not legal! Please keep in mind that this project is created and maintened within the community!**
