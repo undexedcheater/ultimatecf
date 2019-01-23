@@ -15,7 +15,7 @@ void CRender2D::SetDevice(LPDIRECT3DDEVICE9 devIn)
 	pDevice = devIn;
 }
 
-void CRender2D::String(float x, float y, D3DCOLOR colour, CD3DFont* font, bool outlined, const char* string, ...)
+void CRender2D::String(float x, float y, D3DCOLOR colour, ID3DXFont* font, bool outlined, const char* string, ...)
 {
 	va_list args;
 	char cBuffer[256];
@@ -24,26 +24,35 @@ void CRender2D::String(float x, float y, D3DCOLOR colour, CD3DFont* font, bool o
 	vsprintf_s(cBuffer, string, args);
 	va_end(args);
 
+	RECT rc = { 0 };
+	auto len = strlen(cBuffer);
+
 	if (outlined)
 	{
-		font->DrawText(x + 1, y, D3DCOLOR_ARGB(255, 0, 0, 0), cBuffer);
-		font->DrawText(x, y - 1, D3DCOLOR_ARGB(255, 0, 0, 0), cBuffer);
-		font->DrawText(x - 1, y, D3DCOLOR_ARGB(255, 0, 0, 0), cBuffer);
-		font->DrawText(x, y + 1, D3DCOLOR_ARGB(255, 0, 0, 0), cBuffer);
+		SetRect(&rc, x + 1, y, x, y);
+		font->DrawTextA(0, cBuffer, len, &rc, DT_NOCLIP, D3DCOLOR_ARGB(255, 0, 0, 0));
+		SetRect(&rc, x, y - 1, x, y);
+		font->DrawTextA(0, cBuffer, len, &rc, DT_NOCLIP, D3DCOLOR_ARGB(255, 0, 0, 0));
+		SetRect(&rc, x, y, x + 1, y);
+		font->DrawTextA(0, cBuffer, len, &rc, DT_NOCLIP, D3DCOLOR_ARGB(255, 0, 0, 0));
+		SetRect(&rc, x, y, x, y - 1);
+		font->DrawTextA(0, cBuffer, len, &rc, DT_NOCLIP, D3DCOLOR_ARGB(255, 0, 0, 0));
 
-		font->DrawText(x, y, colour, cBuffer);
-
+		SetRect(&rc, x, y, x, y);
+		font->DrawTextA(0, cBuffer, len, &rc, DT_NOCLIP, colour);
 		return;
 	}
-	font->DrawText(x, y, colour, cBuffer);
+
+	SetRect(&rc, x, y, x, y);
+	font->DrawTextA(0, cBuffer, len, &rc, DT_NOCLIP, colour);
 }
 
-int CRender2D::StringWidth(CD3DFont* font, const char* string)
+int CRender2D::StringWidth(ID3DXFont* font, const char* string)
 {
-	SIZE size;
-	font->GetTextExtent(string, &size);
+	RECT rc = { 0 };
+	font->DrawTextA(0, string, strlen(string), &rc, DT_CALCRECT, D3DCOLOR_ARGB(0, 0, 0, 0));
 
-	return size.cx;
+	return (int)(rc.right / 2);
 }
 
 void CRender2D::Line(float x, float y, float x2, float y2, D3DCOLOR colour)

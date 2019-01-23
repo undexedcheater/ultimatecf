@@ -13,63 +13,120 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\menu">
+      <UniqueIdentifier>{880821a8-ff32-4044-bd11-09a19f97769e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\d3d">
+      <UniqueIdentifier>{69a4848b-aad9-4f2d-93f4-ddfb328a3023}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\microsoft">
+      <UniqueIdentifier>{7dfd8c00-4065-4409-91dd-e2209584db7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tools">
+      <UniqueIdentifier>{3c004f12-61f6-47aa-8369-2a4189bd7150}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\game">
+      <UniqueIdentifier>{23aeb869-9a7a-4884-8cda-62a3e3c8c936}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\menu">
+      <UniqueIdentifier>{d22ac03b-2c58-4838-b0f8-630128a48426}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\d3d">
+      <UniqueIdentifier>{17bb3255-7c42-4fd4-8176-1535f182b5f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game">
+      <UniqueIdentifier>{21dff9fb-2345-40c2-87dd-0fce039eb59c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="interfaces.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tools.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hacks.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="menu.cpp">
+      <Filter>Source Files\menu</Filter>
     </ClCompile>
     <ClCompile Include="d3d.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\d3d</Filter>
     </ClCompile>
-    <ClCompile Include="d3dfont9.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="hacks.cpp">
+      <Filter>Source Files\game</Filter>
+    </ClCompile>
+    <ClCompile Include="interfaces.cpp">
+      <Filter>Source Files\game</Filter>
+    </ClCompile>
+    <ClCompile Include="tools.cpp">
+      <Filter>Source Files\game</Filter>
+    </ClCompile>
+    <ClCompile Include="esp.cpp">
+      <Filter>Source Files\game</Filter>
+    </ClCompile>
+    <ClCompile Include="game.cpp">
+      <Filter>Source Files\game</Filter>
+    </ClCompile>
+    <ClCompile Include="aimbot.cpp">
+      <Filter>Source Files\game</Filter>
+    </ClCompile>
+    <ClCompile Include="math.cpp">
+      <Filter>Source Files\game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="sdk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="includes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="detours.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="hacks.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tools.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="xorstr.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="fnv1.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="interfaces.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Menu.h">
+      <Filter>Header Files\menu</Filter>
     </ClInclude>
     <ClInclude Include="d3d.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\d3d</Filter>
     </ClInclude>
-    <ClInclude Include="d3dfont9.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="detours.h">
+      <Filter>Header Files\microsoft</Filter>
+    </ClInclude>
+    <ClInclude Include="fnv1.hpp">
+      <Filter>Header Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="xorstr.hpp">
+      <Filter>Header Files\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="game.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="hacks.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="interfaces.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="tools.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="esp.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="aimbot.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="math.h">
+      <Filter>Header Files\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="detours.lib" />
+    <Text Include="non_used.txt">
+      <Filter>Header Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
-    <None Include="detours.pdb" />
+    <Library Include="detours.lib">
+      <Filter>Header Files\microsoft</Filter>
+    </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="detours.pdb">
+      <Filter>Header Files\microsoft</Filter>
+    </None>
   </ItemGroup>
 </Project>

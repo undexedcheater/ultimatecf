@@ -1,5 +1,12 @@
 #include "includes.h"
 
+#include <fstream>
+
+#define LOG_FILE		"C:\\Users\\Public\\CrossFire_Log.log"
+
+void* Thread_StartAddr = nullptr;
+uint8_t bytes[6] = { 0 };
+
 namespace Tools
 {
 	bool Compare(const BYTE* pData, const BYTE* bMask, const char* szMask)
@@ -132,5 +139,123 @@ namespace Tools
 
 		rtti = stringOut;
 		return true;
+	}
+
+	void __cdecl AddToLogFile(const char *fmt, ...)
+	{
+		std::ofstream ofile;
+		ofile.open(LOG_FILE, std::ios::app);
+
+		va_list va_alist;
+		char logbuf[256] = { 0 };
+
+		va_start(va_alist, fmt);
+		vsnprintf(logbuf + strlen(logbuf), sizeof(logbuf) - strlen(logbuf), fmt, va_alist);
+		va_end(va_alist);
+
+		ofile << logbuf << std::endl;
+
+		ofile.close();
+	}
+
+	void MakeJMP(BYTE *pAddress, DWORD dwJumpTo, DWORD dwLen)
+	{
+		DWORD dwOldProtect, dwRelAddr;
+		VirtualProtect(pAddress, dwLen, PAGE_EXECUTE_READWRITE, &dwOldProtect);
+		dwRelAddr = (DWORD)(dwJumpTo - (DWORD)pAddress) - 5;
+		*pAddress = 0xE9;
+		*((DWORD *)(pAddress + 0x1)) = dwRelAddr;
+		for (DWORD x = 0x5; x < dwLen; x++) *(pAddress + x) = 0x90;
+		VirtualProtect(pAddress, dwLen, dwOldProtect, &dwOldProtect);
+		return;
+	}
+
+	void MakeCALL(BYTE* paddress, DWORD yourfunction, DWORD dwlen)
+	{
+		DWORD dwOldProtect, dwBkup, dwRelAddr;
+		VirtualProtect(paddress, dwlen, PAGE_EXECUTE_READWRITE, &dwOldProtect);
+		dwRelAddr = (DWORD)(yourfunction - (DWORD)paddress) - 5;
+		*paddress = 0xE8;
+		*((DWORD*)(paddress + 0x1)) = dwRelAddr;
+		for (DWORD x = 0x5; x < dwlen; x++) *(paddress + x) = 0x90;
+		VirtualProtect(paddress, dwlen, dwOldProtect, &dwBkup);
+		return;
+	}
+
+	void MemoryMod(void* dst, void* src, size_t size)
+	{
+		DWORD dwOld = 0;
+		VirtualProtect(dst, size, PAGE_EXECUTE_READWRITE, &dwOld);
+		memcpy(dst, src, size);
+		VirtualProtect(dst, size, dwOld, &dwOld);
+	}
+
+	void EraseHeaders(HMODULE hModule)
+	{
+		DWORD dwModule = reinterpret_cast<DWORD>(hModule);
+		
+		PIMAGE_DOS_HEADER		pImageDOS		= (IMAGE_DOS_HEADER*)dwModule;
+		PIMAGE_NT_HEADERS32		pImageNTHeader	= (IMAGE_NT_HEADERS32*)( dwModule + pImageDOS->e_lfanew );
+
+		DWORD dwOld = 0;
+		auto header_size = pImageNTHeader->OptionalHeader.SizeOfHeaders;
+
+		VirtualProtect(reinterpret_cast<void *>(dwModule), header_size, PAGE_EXECUTE_READWRITE, &dwOld);
+		RtlSecureZeroMemory(reinterpret_cast<void *>(dwModule), header_size);
+		VirtualProtect(reinterpret_cast<void *>(dwModule), header_size, PAGE_NOACCESS, &dwOld);
+	}
+
+	HANDLE CreateStealthThread(threadFunc_t pThreadFunc, void *pArgument )
+	{
+		BYTE *pK32 = ( BYTE *)GetModuleHandleA( "ntdll.dll" );
+
+		auto rva2va = [&](DWORD dwVA) { return (void*)((uintptr_t)pK32 + dwVA); };
+
+		// Find propper location to place our shellcode
+		void *pWriteTarget = nullptr;
+
+		auto pMz = (IMAGE_DOS_HEADER*)pK32;
+		auto pNt = (IMAGE_NT_HEADERS32*)rva2va(pMz->e_lfanew);
+		auto pCurSection = (IMAGE_SECTION_HEADER*)((uintptr_t)pNt + sizeof(IMAGE_NT_HEADERS32));
+
+		for (int i = 0; i < pNt->FileHeader.NumberOfSections; ++i)
+		{
+			if (memcmp(".text", pCurSection->Name, 5) == 0)
+			{
+				pWriteTarget = (void*)((uintptr_t)rva2va(pCurSection->VirtualAddress) + pCurSection->Misc.VirtualSize - 6);
+				break;
+			}
+			++pCurSection;
+		}
+
+		if (!pWriteTarget)
+			return NULL;
+
+		printf("WriteLoc: %p\n", pWriteTarget);
+
+		// Prepare and write shellcode to K32
+		uint8_t shellcode[]			= "\x68\x00\x00\x00\x00\xC2";
+
+		DWORD dwOld = 0;
+		*( threadFunc_t *)( shellcode + 1 ) = pThreadFunc;
+		VirtualProtect(pWriteTarget, 6, PAGE_EXECUTE_READWRITE, &dwOld);
+
+		//make backup first
+		Thread_StartAddr = pWriteTarget;
+		for (int i = 0; i < 6; ++i)
+			bytes[i] = *(uint8_t *)pWriteTarget + i;
+
+		//do magic
+		memcpy(pWriteTarget, shellcode, 6);
+		
+		VirtualProtect(pWriteTarget, 6, dwOld, &dwOld);
+
+		DWORD tid = 0;
+
+		//createthread normally
+		auto hThread = CreateThread( nullptr, 0, (LPTHREAD_START_ROUTINE)pWriteTarget, pArgument, NULL, &tid);
+		printf("Thread ID: %d\n", tid);
+
+		return hThread;
 	}
 }

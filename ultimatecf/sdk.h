@@ -36,256 +36,83 @@ bool ValidatePointer(T lpAddress)
 	return true;
 }
 
-#pragma pack(1)		// Packed as the size must be 512 bytes exactly
-typedef struct _IDENTIFY_DEVICE_DATA {
-	struct {
-		USHORT Reserved1 : 1;
-		USHORT Retired3 : 1;
-		USHORT ResponseIncomplete : 1;
-		USHORT Retired2 : 3;
-		USHORT FixedDevice : 1;
-		USHORT RemovableMedia : 1;
-		USHORT Retired1 : 7;
-		USHORT DeviceType : 1;
-	} GeneralConfiguration;
-	USHORT NumCylinders;
-	USHORT ReservedWord2;
-	USHORT NumHeads;
-	USHORT Retired1[2];
-	USHORT NumSectorsPerTrack;
-	USHORT VendorUnique1[3];
-	UCHAR  SerialNumber[20];
-	USHORT Retired2[2];
-	USHORT Obsolete1;
-	UCHAR  FirmwareRevision[8];
-	UCHAR  ModelNumber[40];
-	UCHAR  MaximumBlockTransfer;
-	UCHAR  VendorUnique2;
-	USHORT ReservedWord48;
-	struct {
-		UCHAR  ReservedByte49;
-		UCHAR  DmaSupported : 1;
-		UCHAR  LbaSupported : 1;
-		UCHAR  IordyDisable : 1;
-		UCHAR  IordySupported : 1;
-		UCHAR  Reserved1 : 1;
-		UCHAR  StandybyTimerSupport : 1;
-		UCHAR  Reserved2 : 2;
-		USHORT ReservedWord50;
-	} Capabilities;
-	USHORT ObsoleteWords51[2];
-	USHORT TranslationFieldsValid : 3;
-	USHORT Reserved3 : 13;
-	USHORT NumberOfCurrentCylinders;
-	USHORT NumberOfCurrentHeads;
-	USHORT CurrentSectorsPerTrack;
-	ULONG  CurrentSectorCapacity;
-	UCHAR  CurrentMultiSectorSetting;
-	UCHAR  MultiSectorSettingValid : 1;
-	UCHAR  ReservedByte59 : 7;
-	ULONG  UserAddressableSectors;
-	USHORT ObsoleteWord62;
-	USHORT MultiWordDMASupport : 8;
-	USHORT MultiWordDMAActive : 8;
-	USHORT AdvancedPIOModes : 8;
-	USHORT ReservedByte64 : 8;
-	USHORT MinimumMWXferCycleTime;
-	USHORT RecommendedMWXferCycleTime;
-	USHORT MinimumPIOCycleTime;
-	USHORT MinimumPIOCycleTimeIORDY;
-	USHORT ReservedWords69[6];
-	USHORT QueueDepth : 5;
-	USHORT ReservedWord75 : 11;
-	USHORT ReservedWords76[4];
-	USHORT MajorRevision;
-	USHORT MinorRevision;
-	struct {
-		USHORT SmartCommands : 1;
-		USHORT SecurityMode : 1;
-		USHORT RemovableMediaFeature : 1;
-		USHORT PowerManagement : 1;
-		USHORT Reserved1 : 1;
-		USHORT WriteCache : 1;
-		USHORT LookAhead : 1;
-		USHORT ReleaseInterrupt : 1;
-		USHORT ServiceInterrupt : 1;
-		USHORT DeviceReset : 1;
-		USHORT HostProtectedArea : 1;
-		USHORT Obsolete1 : 1;
-		USHORT WriteBuffer : 1;
-		USHORT ReadBuffer : 1;
-		USHORT Nop : 1;
-		USHORT Obsolete2 : 1;
-		USHORT DownloadMicrocode : 1;
-		USHORT DmaQueued : 1;
-		USHORT Cfa : 1;
-		USHORT AdvancedPm : 1;
-		USHORT Msn : 1;
-		USHORT PowerUpInStandby : 1;
-		USHORT ManualPowerUp : 1;
-		USHORT Reserved2 : 1;
-		USHORT SetMax : 1;
-		USHORT Acoustics : 1;
-		USHORT BigLba : 1;
-		USHORT DeviceConfigOverlay : 1;
-		USHORT FlushCache : 1;
-		USHORT FlushCacheExt : 1;
-		USHORT Resrved3 : 2;
-		USHORT SmartErrorLog : 1;
-		USHORT SmartSelfTest : 1;
-		USHORT MediaSerialNumber : 1;
-		USHORT MediaCardPassThrough : 1;
-		USHORT StreamingFeature : 1;
-		USHORT GpLogging : 1;
-		USHORT WriteFua : 1;
-		USHORT WriteQueuedFua : 1;
-		USHORT WWN64Bit : 1;
-		USHORT URGReadStream : 1;
-		USHORT URGWriteStream : 1;
-		USHORT ReservedForTechReport : 2;
-		USHORT IdleWithUnloadFeature : 1;
-		USHORT Reserved4 : 2;
-	} CommandSetSupport;
-	struct {
-		USHORT SmartCommands : 1;
-		USHORT SecurityMode : 1;
-		USHORT RemovableMediaFeature : 1;
-		USHORT PowerManagement : 1;
-		USHORT Reserved1 : 1;
-		USHORT WriteCache : 1;
-		USHORT LookAhead : 1;
-		USHORT ReleaseInterrupt : 1;
-		USHORT ServiceInterrupt : 1;
-		USHORT DeviceReset : 1;
-		USHORT HostProtectedArea : 1;
-		USHORT Obsolete1 : 1;
-		USHORT WriteBuffer : 1;
-		USHORT ReadBuffer : 1;
-		USHORT Nop : 1;
-		USHORT Obsolete2 : 1;
-		USHORT DownloadMicrocode : 1;
-		USHORT DmaQueued : 1;
-		USHORT Cfa : 1;
-		USHORT AdvancedPm : 1;
-		USHORT Msn : 1;
-		USHORT PowerUpInStandby : 1;
-		USHORT ManualPowerUp : 1;
-		USHORT Reserved2 : 1;
-		USHORT SetMax : 1;
-		USHORT Acoustics : 1;
-		USHORT BigLba : 1;
-		USHORT DeviceConfigOverlay : 1;
-		USHORT FlushCache : 1;
-		USHORT FlushCacheExt : 1;
-		USHORT Resrved3 : 2;
-		USHORT SmartErrorLog : 1;
-		USHORT SmartSelfTest : 1;
-		USHORT MediaSerialNumber : 1;
-		USHORT MediaCardPassThrough : 1;
-		USHORT StreamingFeature : 1;
-		USHORT GpLogging : 1;
-		USHORT WriteFua : 1;
-		USHORT WriteQueuedFua : 1;
-		USHORT WWN64Bit : 1;
-		USHORT URGReadStream : 1;
-		USHORT URGWriteStream : 1;
-		USHORT ReservedForTechReport : 2;
-		USHORT IdleWithUnloadFeature : 1;
-		USHORT Reserved4 : 2;
-	} CommandSetActive;
-	USHORT UltraDMASupport : 8;
-	USHORT UltraDMAActive : 8;
-	USHORT ReservedWord89[4];
-	USHORT HardwareResetResult;
-	USHORT CurrentAcousticValue : 8;
-	USHORT RecommendedAcousticValue : 8;
-	USHORT ReservedWord95[5];
-	ULONG  Max48BitLBA[2];
-	USHORT StreamingTransferTime;
-	USHORT ReservedWord105;
-	struct {
-		USHORT LogicalSectorsPerPhysicalSector : 4;
-		USHORT Reserved0 : 8;
-		USHORT LogicalSectorLongerThan256Words : 1;
-		USHORT MultipleLogicalSectorsPerPhysicalSector : 1;
-		USHORT Reserved1 : 2;
-	} PhysicalLogicalSectorSize;
-	USHORT InterSeekDelay;
-	USHORT WorldWideName[4];
-	USHORT ReservedForWorldWideName128[4];
-	USHORT ReservedForTlcTechnicalReport;
-	USHORT WordsPerLogicalSector[2];
-	struct {
-		USHORT ReservedForDrqTechnicalReport : 1;
-		USHORT WriteReadVerifySupported : 1;
-		USHORT Reserved01 : 11;
-		USHORT Reserved1 : 2;
-	} CommandSetSupportExt;
-	struct {
-		USHORT ReservedForDrqTechnicalReport : 1;
-		USHORT WriteReadVerifyEnabled : 1;
-		USHORT Reserved01 : 11;
-		USHORT Reserved1 : 2;
-	} CommandSetActiveExt;
-	USHORT ReservedForExpandedSupportandActive[6];
-	USHORT MsnSupport : 2;
-	USHORT ReservedWord1274 : 14;
-	struct {
-		USHORT SecuritySupported : 1;
-		USHORT SecurityEnabled : 1;
-		USHORT SecurityLocked : 1;
-		USHORT SecurityFrozen : 1;
-		USHORT SecurityCountExpired : 1;
-		USHORT EnhancedSecurityEraseSupported : 1;
-		USHORT Reserved0 : 2;
-		USHORT SecurityLevel : 1;
-		USHORT Reserved1 : 7;
-	} SecurityStatus;
-	USHORT ReservedWord129[31];
-	struct {
-		USHORT MaximumCurrentInMA2 : 12;
-		USHORT CfaPowerMode1Disabled : 1;
-		USHORT CfaPowerMode1Required : 1;
-		USHORT Reserved0 : 1;
-		USHORT Word160Supported : 1;
-	} CfaPowerModel;
-	USHORT ReservedForCfaWord161[8];
-	struct {
-		USHORT SupportsTrim : 1;
-		USHORT Reserved0 : 15;
-	} DataSetManagementFeature;
-	USHORT ReservedForCfaWord170[6];
-	USHORT CurrentMediaSerialNumber[30];
-	USHORT ReservedWord206;
-	USHORT ReservedWord207[2];
-	struct {
-		USHORT AlignmentOfLogicalWithinPhysical : 14;
-		USHORT Word209Supported : 1;
-		USHORT Reserved0 : 1;
-	} BlockAlignment;
-	USHORT WriteReadVerifySectorCountMode3Only[2];
-	USHORT WriteReadVerifySectorCountMode2Only[2];
-	struct {
-		USHORT NVCachePowerModeEnabled : 1;
-		USHORT Reserved0 : 3;
-		USHORT NVCacheFeatureSetEnabled : 1;
-		USHORT Reserved1 : 3;
-		USHORT NVCachePowerModeVersion : 4;
-		USHORT NVCacheFeatureSetVersion : 4;
-	} NVCacheCapabilities;
-	USHORT NVCacheSizeLSW;
-	USHORT NVCacheSizeMSW;
-	USHORT NominalMediaRotationRate;
-	USHORT ReservedWord218;
-	struct {
-		UCHAR NVCacheEstimatedTimeToSpinUpInSeconds;
-		UCHAR Reserved;
-	} NVCacheOptions;
-	USHORT ReservedWord220[35];
-	USHORT Signature : 8;
-	USHORT CheckSum : 8;
-} IDENTIFY_DEVICE_DATA, *PIDENTIFY_DEVICE_DATA;
+#pragma pack(1)
+
+typedef struct _IDENTIFY_DATA {
+	USHORT GeneralConfiguration;       /* 00 */
+	USHORT NumCylinders;               /* 02 */
+	USHORT Reserved1;                  /* 04 */
+	USHORT NumHeads;                   /* 06 */
+	USHORT UnformattedBytesPerTrack;   /* 08 */
+	USHORT UnformattedBytesPerSector;  /* 10 */
+	USHORT NumSectorsPerTrack;         /* 12 */
+	USHORT VendorUnique1[3];           /* 14 */
+	UCHAR  SerialNumber[20];           /* 20 */
+	USHORT BufferType;                 /* 40 */
+	USHORT BufferSectorSize;           /* 42 */
+	USHORT NumberOfEccBytes;           /* 44 */
+	UCHAR  FirmwareRevision[8];        /* 46 */
+	UCHAR  ModelNumber[40];            /* 54 */
+	UCHAR  MaximumBlockTransfer;       /* 94 */
+	UCHAR  VendorUnique2;              /* 95 */
+	USHORT DoubleWordIo;               /* 96 */
+	USHORT Capabilities;               /* 98 */
+	USHORT Reserved2;                  /* 100 */
+	UCHAR  VendorUnique3;              /* 102 */
+	UCHAR  PioCycleTimingMode;         /* 103 */
+	UCHAR  VendorUnique4;              /* 104 */
+	UCHAR  DmaCycleTimingMode;         /* 105 */
+	USHORT TranslationFieldsValid : 3;   /* 106 */
+	USHORT Reserved3 : 13;               /*  -  */
+	USHORT NumberOfCurrentCylinders;   /* 108 */
+	USHORT NumberOfCurrentHeads;       /* 110 */
+	USHORT CurrentSectorsPerTrack;     /* 112 */
+	ULONG  CurrentSectorCapacity;      /* 114 */
+	USHORT CurrentMultiSectorSetting;  /* 118 */
+	ULONG  UserAddressableSectors;     /* 120 */
+	USHORT SingleWordDMASupport : 8;     /* 124 */
+	USHORT SingleWordDMAActive : 8;      /*  -  */
+	USHORT MultiWordDMASupport : 8;      /* 126 */
+	USHORT MultiWordDMAActive : 8;       /*  -  */
+	USHORT AdvancedPIOModes : 8;         /* 128 */
+	USHORT Reserved4 : 8;                /*  -  */
+	USHORT MinimumMWXferCycleTime;     /* 130 */
+	USHORT RecommendedMWXferCycleTime; /* 132 */
+	USHORT MinimumPIOCycleTime;        /* 134 */
+	USHORT MinimumPIOCycleTimeIORDY;   /* 136 */
+	USHORT Reserved5[11];              /* 138 */
+	USHORT MajorRevision;              /* 160 */
+	USHORT MinorRevision;              /* 162 */
+	USHORT Reserved6;                  /* 164 */
+	USHORT CommandSetSupport;          /* 166 */
+	USHORT Reserved6a[2];              /* 168 */
+	USHORT CommandSetActive;           /* 172 */
+	USHORT Reserved6b;                 /* 174 */
+	USHORT UltraDMASupport : 8;          /* 176 */
+	USHORT UltraDMAActive : 8;           /*  -  */
+	USHORT Reserved7[11];              /* 178 */
+	ULONG  Max48BitLBA[2];             /* 200 */
+	USHORT Reserved7a[22];             /* 208 */
+	USHORT LastLun : 3;                  /* 252 */
+	USHORT Reserved8 : 13;               /*  -  */
+	USHORT MediaStatusNotification : 2;  /* 254 */
+	USHORT Reserved9 : 6;                /*  -  */
+	USHORT DeviceWriteProtect : 1;       /*  -  */
+	USHORT Reserved10 : 7;               /*  -  */
+	USHORT Reserved11[128];            /* 256 */
+} IDENTIFY_DATA, *PIDENTIFY_DATA;
+
 #pragma pack()
+
+typedef struct _GETVERSIONOUTPARAMS
+{
+	BYTE bVersion;      // Binary driver version.
+	BYTE bRevision;     // Binary driver revision.
+	BYTE bReserved;     // Not used.
+	BYTE bIDEDeviceMap; // Bit map of IDE devices.
+	DWORD fCapabilities; // Bit mask of driver capabilities.
+	DWORD dwReserved[4]; // For future use.
+} GETVERSIONOUTPARAMS, *PGETVERSIONOUTPARAMS, *LPGETVERSIONOUTPARAMS;
 
 typedef struct _UNICODE_STRING {
 	USHORT Length;
@@ -307,6 +134,51 @@ typedef struct LDR_DATA_ENTRY {
 	ULONG                   TimeDateStamp;
 } LDR_DATA_ENTRY, *PLDR_DATA_ENTRY;
 
+//typedef bool(*IntersectSegment) (const IntersectQuery &iQuery, IntersectInfo *qInfo);
+typedef bool(*ObjectFilterFn) (int* hObj, void* pUserData);
+
+struct IntersectInfo
+{
+	D3DXVECTOR3 vImpactPos;		//0x0000
+	char unknown12[16];
+	int *hObjImpact;			//0x001C
+	DWORD nSomething1;			//0x0020
+	DWORD nSomething2;			//0x0024
+	DWORD nSomething3;			//0x0028
+};
+
+struct IntersectQuery
+{
+	D3DXVECTOR3 Start;					//0x0000
+	D3DXVECTOR3 End;					//0x000C
+	char unknown24[12];
+	UINT Flags;							//0x0024
+	ObjectFilterFn FilterFn;			//0x0028
+	void *FilterIntersectParam;			//0x002C
+	ObjectFilterFn FilterIntersectFn;	//0x0030
+	void *FilterParam;					//0x0034
+	void *PolyFilterParam;				//0x0038
+};
+
+class CObjectFX
+{
+public:
+	PAD(160); //0x0004
+	int* Object; //0x00A4
+	PAD(8); //0x00A8
+	float fPitch; //0x00B0
+	float fYaw; //0x00B4
+	float fRoll; //0x00B8
+	PAD(44); //0x00BC
+	D3DXVECTOR3 Position; //0x00E8
+	PAD(272); //0x00F4
+	int8_t IsDead; //0x0204
+	PAD(15); //0x0205
+	int8_t SpawnShield; //0x0214
+	PAD(763); //0x0215
+	__int32 numHitBox; //0x0510
+};
+
 class CPlayerInfo
 {
 public:
@@ -320,7 +192,7 @@ public:
 	int8_t iTeam; //0x000D
 	char szName[12]; //0x000E
 	PAD(2); //0x001A
-	void* PtrCharFX; //0x001C
+	CObjectFX* pObjectFX; //0x001C
 	int32_t iPlayerSlotTeam; //0x0020
 	PAD(4); //0x0024
 	bool bHasC4; //0x0028
@@ -335,39 +207,62 @@ public:
 	int32_t iPing; //0x0049
 }; //Size: 0x004D
 
-__forceinline CPlayerInfo* GetPlayerByIndex(uintptr_t client_shell, uint8_t i)
+__forceinline CPlayerInfo* GetPlayerByIndex(uint8_t i)
 {
 	CPlayerInfo* player = nullptr;
 
 	if (i > 0 && i <= 16)
 	{
-		player = (CPlayerInfo *)(client_shell + (0xD78 * i) + 0x1E8);
+		player = (CPlayerInfo *)((DWORD)g_pLTClientShell + (0xD78 * i) + 0x1E8);
 	}
 	return player;
 }
 
-__forceinline CPlayerInfo* GetLocalPlayer(uintptr_t client_shell)
+__forceinline CPlayerInfo* GetLocalPlayer( )
 {
 	using GetLocalPlayer_t = uint8_t(__thiscall *)(DWORD);
 
-	static DWORD dwGetLocalPlayerFnc = 0;
-		//Tools::SearchPattern("CShell.dll", (BYTE *)"\x56\x8B\xF1\x0F\xB6\x86\x00\x00\x00\x00\x50\xE8\x00\x00\x00\x00\x83\xC4\x04\x84\xC0\x75\x04", "xxxxxx????xx????xxxxxxx");
+	static DWORD dwGetLocalPlayerFnc = 
+		Tools::SearchPattern("CShell.dll", (BYTE *)"\x56\x8B\xF1\x0F\xB6\x86\x00\x00\x00\x00\x50\xE8\x00\x00\x00\x00\x83\xC4\x04\x84\xC0\x75\x04", "xxxxxx????xx????xxxxxxx");
 
-	return GetPlayerByIndex(client_shell, reinterpret_cast<GetLocalPlayer_t>(dwGetLocalPlayerFnc)(client_shell));
+	return GetPlayerByIndex( reinterpret_cast<GetLocalPlayer_t>(dwGetLocalPlayerFnc)((DWORD)g_pLTClientShell) );
 }
 
 //CPlayerClient Offset -> 8B 49 78 85 C9 74 3E 
+#define LessRecoil                               0x618
+#define LessRecoilZM                             0x528
+#define NoSpread                                 0x5F8
+#define NoSpreadZM                               0x5F4 // 0x4F4
+#define Yaw                                      0x4E4
+#define Pitch                                    0x4EC
+
 class CPlayerClient
 {
 public:
-	float *GetYaw()
+	float GetYaw()
 	{
-		return *(float **)((uintptr_t)this + 0x4E4);
+		return *(float *)((uintptr_t)this + Yaw);
 	}
 
-	float *GetPitch()
+	float GetPitch()
 	{
-		return *(float **)((uintptr_t)this + 0x4EC);
+		return *(float *)((uintptr_t)this + Pitch);
+	}
+
+	void SetPlayerAngles(float x, float y)
+	{
+		*(float *)((uintptr_t)this + Yaw) = x;
+		*(float *)((uintptr_t)this + Pitch) = y;
+	}
+
+	void SetLessRecoil(int val)
+	{
+		*(DWORD *)((uintptr_t)this + LessRecoil) = val;
+	}
+
+	void SetNoSpread(int val)
+	{
+		*(DWORD *)((uintptr_t)this + NoSpread) = val;
 	}
 };
 
@@ -420,8 +315,15 @@ public:
 	void RunConsoleCmd(const char* pszCommand)
 	{
 		using RunConsoleCmd_t = void(__cdecl *)(const char*);
-		DWORD ptr = *( DWORD *)((DWORD)this + 0x21C);
+		DWORD ptr = ((DWORD)this + 0x21C);
 		return reinterpret_cast<RunConsoleCmd_t>(ptr)(pszCommand);
+	}
+
+	void SetObjectOutLine(int* Object, bool Status, uint8_t r, uint8_t g, uint8_t b)
+	{
+		using oSetObjectOutLine = void(__cdecl* )( int*, bool, uint8_t, uint8_t, uint8_t);
+		DWORD ptr = ((DWORD)this + 0x108);
+		return reinterpret_cast<oSetObjectOutLine>(ptr)( Object, Status, r, g, b );
 	}
 };
 
@@ -429,7 +331,6 @@ public:
 class CLTClient : public CLTBase
 {
 public:
-
 	CLTModel* GetLTModel()
 	{
 		typedef CLTModel*(__thiscall* oGetLTModel)(void *);
@@ -438,7 +339,6 @@ public:
 };
 
 //ModelNodeMgr Sig: 8B 15 ? ? ? ? D9 5C 17 2C 
-
 enum /*class*/ eGameState
 {
 	GSC_LOGIN = 1,

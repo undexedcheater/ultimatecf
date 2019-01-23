@@ -1,6 +1,6 @@
 #pragma once
 
-#include "d3dfont9.h"
+#include <d3dx9.h>
 
 class CRender2D
 {
@@ -13,8 +13,8 @@ public:
 
 	void SetDevice(LPDIRECT3DDEVICE9 devIn);
 	
-	void String(float x, float y, D3DCOLOR colour, CD3DFont* font, bool outlined, const char* string, ...);
-	int StringWidth(CD3DFont* font, const char* string);
+	void String(float x, float y, D3DCOLOR colour, ID3DXFont* font, bool outlined, const char* string, ...);
+	int StringWidth(ID3DXFont* font, const char* string);
 
 	void Line(float x, float y, float x2, float y2, D3DCOLOR colour);
 	void FilledBox(float x, float y, float width, float height, D3DCOLOR colour);

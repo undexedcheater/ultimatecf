@@ -6,4 +6,14 @@ namespace Hacks
 	{
 		void Update();
 	}
+
+	namespace Hitbox
+	{
+		void Update();
+	}
+
+	namespace Player
+	{
+		void Update();
+	}
 }

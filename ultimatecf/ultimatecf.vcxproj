@@ -143,21 +143,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="aimbot.cpp" />
     <ClCompile Include="d3d.cpp" />
-    <ClCompile Include="d3dfont9.cpp" />
+    <ClCompile Include="esp.cpp" />
+    <ClCompile Include="game.cpp" />
     <ClCompile Include="hacks.cpp" />
     <ClCompile Include="interfaces.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="math.cpp" />
+    <ClCompile Include="menu.cpp" />
     <ClCompile Include="tools.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="aimbot.h" />
     <ClInclude Include="d3d.h" />
-    <ClInclude Include="d3dfont9.h" />
     <ClInclude Include="detours.h" />
+    <ClInclude Include="esp.h" />
     <ClInclude Include="fnv1.hpp" />
+    <ClInclude Include="game.h" />
     <ClInclude Include="hacks.h" />
     <ClInclude Include="includes.h" />
     <ClInclude Include="interfaces.h" />
+    <ClInclude Include="math.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="sdk.h" />
     <ClInclude Include="tools.h" />
     <ClInclude Include="xorstr.hpp" />
@@ -167,6 +175,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="detours.pdb" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="non_used.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
