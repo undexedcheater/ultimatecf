@@ -5,8 +5,7 @@ Trying to be the most complete project in the world (wow)!
 
 Current dependencies:
 
-- Microsoft Detours 4.1
-- CD3DFont
+- Microsoft Detours 4.1            
 - XorStr Compile Time
 - FNV-1 Hash Functions
 
