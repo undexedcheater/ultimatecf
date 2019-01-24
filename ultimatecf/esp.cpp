@@ -181,6 +181,34 @@ namespace ESP
 
 			//Skeleton
 			Bones(pEnemy->iObject, White);
+
+			auto pWeaponFX = g_pLTClientShell->GetDroppedFX();
+			if (pWeaponFX == 0)
+				continue;
+
+			D3DXVECTOR3 vWeapon = { 0.0F, 0.0F, 0.0F };
+
+			//incase LT_OK...
+			g_pLTClient->GetObjectPos(pWeaponFX->cObject0, &vWeapon);
+
+			if (!WorldToScreen(&vWeapon, &vWeapon))
+				continue;
+
+			pRenderer->String( vWeapon.x, vWeapon.y, White, g_pMainFont, true, "Weapon" );
+
+			auto pNPC = g_pLTClientShell->GetAIObject();
+			if (pNPC == 0)
+				continue;
+
+			D3DXVECTOR3 vNPCPos = { 0.0F, 0.0F, 0.0F };
+
+			//incase LT_OK...
+			g_pLTClient->GetObjectPos(pNPC->Object, &vNPCPos);
+
+			if (!WorldToScreen(&vNPCPos, &vNPCPos))
+				continue;
+
+			pRenderer->String(vNPCPos.x, vNPCPos.y, White, g_pMainFont, true, "NPC");
 		}
 	}
 }

@@ -299,6 +299,25 @@ public:
 	}
 };
 
+#define AIOBJECT_OFF		0x0
+#define DROPPEDFX_OFF		0x0
+
+class CAIObject
+{
+public:
+	char pad_0000[164];
+	int* Object; // 0x00A4
+};
+
+class CDroppedWeaponFX
+{
+public:
+	char pad_0000[8]; //0x0000
+	__int32 ItemType; //0x0008
+	int* cObject0; //0x000C
+	int* cObject1; //0x0010
+};
+
 //CLTClientShell Sig: 8B 0D ? ? ? ? 57 E8 ? ? ? ? 57 
 class CLTClientShell
 {
@@ -306,6 +325,16 @@ public:
 	CPlayerClient* GetPlayerClient()
 	{
 		return (CPlayerClient*)((DWORD)this + 0x78);
+	}
+
+	CAIObject* GetAIObject()
+	{
+		return **(CAIObject***)((DWORD)this + AIOBJECT_OFF);
+	}
+
+	CDroppedWeaponFX* GetDroppedFX()
+	{
+		return *(CDroppedWeaponFX**)((DWORD)this + DROPPEDFX_OFF);
 	}
 };
 
@@ -335,6 +364,12 @@ public:
 	{
 		typedef CLTModel*(__thiscall* oGetLTModel)(void *);
 		return GetVFunction<oGetLTModel>(this, 4)(this);
+	}
+
+	uint32_t GetObjectPos(int* hObj, D3DXVECTOR3 *pPos)
+	{
+		typedef uint32_t (__thiscall* oGetObjectPos)(void *, int*, D3DXVECTOR3* );
+		return GetVFunction<oGetObjectPos>(this, 999 /*find yourself because i was too lazy to do it, hint: 0x0098 - 0x009C*/)(this, hObj, pPos);
 	}
 };
 
